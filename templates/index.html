@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVE Database</title>
+</head>
+<body>
+    <h1>CVE Database</h1>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Form to add new CVE -->
+    <form action="/add" method="POST">
+        <label for="cve_id">CVE ID:</label>
+        <input type="text" id="cve_id" name="cve_id" required><br><br>
+        
+        <label for="rule_name">Rule Name:</label>
+        <input type="text" id="rule_name" name="rule_name" required><br><br>
+        
+        <label for="cve_description">CVE Description:</label>
+        <textarea id="cve_description" name="cve_description" required></textarea><br><br>
+        
+        <label for="severity">Severity:</label>
+        <select id="severity" name="severity" required>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select><br><br>
+        
+        <label for="correlation_logic">Correlation Logic:</label>
+        <input type="text" id="correlation_logic" name="correlation_logic" required><br><br>
+        
+        <label for="created_by">Created By:</label>
+        <input type="text" id="created_by" name="created_by" required><br><br>
+        
+        <button type="submit">Add CVE</button>
+    </form>
+
+    <hr>
+
+    <!-- Export options -->
+    <form action="/export" method="GET">
+        <button type="submit">Export to CSV</button>
+    </form>
+    <form action="/export_sql" method="GET">
+        <button type="submit">Export to SQL</button>
+    </form>
+
+    <hr>
+
+    <h2>Existing CVEs</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>CVE ID</th>
+                <th>Rule Name</th>
+                <th>CVE Description</th>
+                <th>Severity</th>
+                <th>Correlation Logic</th>
+                <th>Created By</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cve in cves %}
+                <tr>
+                    <td>{{ cve.cve_id }}</td>
+                    <td>{{ cve.rule_name }}</td>
+                    <td>{{ cve.cve_description }}</td>
+                    <td>{{ cve.severity }}</td>
+                    <td>{{ cve.correlation_logic }}</td>
+                    <td>{{ cve.created_by }}</td>
+                    <td>{{ cve.created_at }}</td>
+                    <td><a href="/edit/{{ cve.cve_id }}">Edit</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Add New Column to CVE Table</h2>
+    <a href="/create_column">Add Column</a>
+</body>
+</html>

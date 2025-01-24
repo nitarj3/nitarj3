@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit CVE Rule</title>
+</head>
+<body>
+    <h1>Edit CVE Rule</h1>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="/edit/{{ cve.cve_id }}" method="POST">
+        <label for="cve_id">CVE ID:</label>
+        <input type="text" id="cve_id" name="cve_id" value="{{ cve.cve_id }}" required><br><br>
+        
+        <label for="rule_name">Rule Name:</label>
+        <input type="text" id="rule_name" name="rule_name" value="{{ cve.rule_name }}" required><br><br>
+        
+        <label for="cve_description">CVE Description:</label>
+        <textarea id="cve_description" name="cve_description" required>{{ cve.cve_description }}</textarea><br><br>
+        
+        <label for="severity">Severity:</label>
+        <select id="severity" name="severity" required>
+            <option value="Critical" {% if cve.severity == 'Critical' %}selected{% endif %}>Critical</option>
+            <option value="High" {% if cve.severity == 'High' %}selected{% endif %}>High</option>
+            <option value="Medium" {% if cve.severity == 'Medium' %}selected{% endif %}>Medium</option>
+            <option value="Low" {% if cve.severity == 'Low' %}selected{% endif %}>Low</option>
+        </select><br><br>
+        
+        <label for="correlation_logic">Correlation Logic:</label>
+        <input type="text" id="correlation_logic" name="correlation_logic" value="{{ cve.correlation_logic }}" required><br><br>
+        
+        <label for="created_by">Created By:</label>
+        <input type="text" id="created_by" name="created_by" value="{{ cve.created_by }}" required><br><br>
+
+        <label for="references">References:</label>
+        <input type="text" id="references" name="references" value="{{ cve.references }}"><br><br>
+        
+        <input type="submit" value="Save Changes">
+    </form>
+</body>
+</html>

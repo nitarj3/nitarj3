@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Column</title>
+</head>
+<body>
+    <h1>Add New Column to CVE Table</h1>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="/add_column" method="POST">
+        <label for="column_name">Column Name:</label>
+        <input type="text" id="column_name" name="column_name" required><br><br>
+
+        <label for="data_type">Data Type:</label>
+        <input type="text" id="data_type" name="data_type" required><br><br>
+
+        <label for="data_size">Data Size:</label>
+        <input type="number" id="data_size" name="data_size" required><br><br>
+
+        <button type="submit">Add Column</button>
+    </form>
+</body>
+</html>
